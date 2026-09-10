@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "residue"
+version = "0.1.0"
+description = "Transparent provenance capture for ML training pipelines"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"          # floor is StrEnum (schema/types.py); everything else is <=3.10
+authors = [{ email = "wds8wd@virginia.edu" }]
+
+# Deliberately empty: no module-level third-party import anywhere in the package. torch, pandas,
+# PIL and sklearn are imported inside the hooks that need them, so residue installs into an existing
+# project without touching its dependency graph, and the analysis side runs with no torch at all.
+dependencies = []
+
+[project.optional-dependencies]
+torch = ["torch>=2.0"]              # only capture needs it; ledger reading/diffing/rendering do not
+
+[project.urls]
+Repository = "https://github.com/DART-Laboratory/residue"
+
+[project.scripts]
+residue = "residue.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["residue*"]
